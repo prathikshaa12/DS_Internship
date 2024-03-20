@@ -1,0 +1,74 @@
+#Level(1)Task-1
+import pandas as pd
+data=pd.read_csv(r"E:\internship_dataset.csv")
+#To print number of rows and columns
+number_of_rows, number_of_columns = data.shape
+print("Number of rows:", number_of_rows)
+print("Number of columns:", number_of_columns)
+print("**********************************************************")
+# Checking for missing values
+missing_values_at_prior = data.isnull().sum()
+print("Columns with missing values are/is:")
+print(missing_values_at_prior[missing_values_at_prior > 0])
+print("*********************************************************")
+#Filling missing value in Cuisine column
+mode_cuisines = data['Cuisines'].mode()[0]
+data['Cuisines'] = data['Cuisines'].fillna(mode_cuisines)
+missing_values_rectified = data.isnull().sum()
+print("Columns with missing values after rectification:")
+print(missing_values_rectified[missing_values_rectified > 0])
+print("**********************************************************")
+#if there is no missing values after rectification it gives Empty series
+#checking data type conversion is necessary or not
+data_types = data.dtypes
+columns_to_convert = {}
+for column, dtype in data_types.items():
+    if not pd.api.types.is_numeric_dtype(dtype) and not pd.api.types.is_datetime64_any_dtype(dtype):
+        columns_to_convert[column] = dtype
+if columns_to_convert:
+    print("Columns needing conversion and their current data types:")
+    for column, dtype in columns_to_convert.items():
+        print(f"{column}: {dtype}")
+else:
+    print("No columns needing conversion found.")
+print("**************************************************************")
+#Performing Data Type conversion
+for column, dtype in columns_to_convert.items():
+    if dtype == 'object':
+        data[column] = data[column].astype('category')
+    elif dtype == 'float64':
+        data[column] = data[column].astype('int64')
+print("Data types after conversion:")
+print(data.dtypes)
+print("****************************************************************")
+import matplotlib.pyplot as plt
+import seaborn as sns
+#Analyzing the distribution of the target variable-Aggregate rating
+target_variable = "Aggregate rating"
+#Descriptive statistics
+print("Descriptive statistics of the target variable:")
+print(data[target_variable].describe())
+print("**************************************************************")
+# Visualization-Histogram
+plt.figure(figsize=(8, 6))
+sns.histplot(data[target_variable], bins=20, kde=True, color='skyblue')
+plt.title("Distribution of Aggregate Rating")
+plt.xlabel("Aggregate Rating")
+plt.ylabel("Frequency")
+plt.show()
+print("*************************************************************")
+#Visualization-Boxplot
+plt.figure(figsize=(8, 6))
+sns.boxplot(data[target_variable], color='lightgreen')
+plt.title("Boxplot of Aggregate Rating")
+plt.xlabel("Aggregate Rating")
+plt.show()
+data = pd.read_csv(r"E:\intern_datsaet.csv")
+# Visualization-Count plot for class imbalance
+plt.figure(figsize=(8, 6))
+sns.countplot(x=data['Aggregate rating'], palette="pastel", legend=False)
+plt.title("Class Imbalance of Aggregate Rating")
+plt.xlabel("Aggregate Rating")
+plt.ylabel("Count")
+plt.show()
+print("****************************************************************")
