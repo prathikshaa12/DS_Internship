@@ -1,0 +1,97 @@
+import pandas as pd
+data = pd.read_csv(r"E:\intern_datsaet.csv")
+#Selecting only numeric columns
+numeric_data = data.select_dtypes(include='number')
+#Mean
+mean_values = numeric_data.mean()
+print("Mean values for the numerical columns are:")
+print(mean_values)
+print("***********************************************************************************************")
+#Median
+median_values = numeric_data.median()
+print("\nMedian values for the numerical columns are:")
+print(median_values)
+print("***********************************************************************************************")
+#Mode
+mode_values = numeric_data.mode().iloc[0]  # Mode may have multiple values, so we select the first one
+print("\nMode values for the numerical columns are:")
+print(mode_values)
+print("***********************************************************************************************")
+#Variance
+variance_values = numeric_data.var()
+print("\nVariance values for the numerical columns:")
+print(variance_values)
+print("***********************************************************************************************")
+#Standard Deviation
+std_deviation = numeric_data.std()
+print("\nStandard deviation for the numerical columns are:")
+print(std_deviation)
+print("***********************************************************************************************")
+#Range
+range_values = numeric_data.max() - numeric_data.min()
+print("\nRange for the numerical columns are:")
+print(range_values)
+print("***********************************************************************************************")
+#Interquartile Range (IQR)
+Q1 = numeric_data.quantile(0.25)
+Q3 = numeric_data.quantile(0.75)
+IQR = Q3 - Q1
+print("\nInterquartile Range (IQR) for the numerical columns are:")
+print(IQR)
+print("***********************************************************************************************")
+#Percentiles
+percentiles = numeric_data.quantile([0.25, 0.5, 0.75])
+print("\nPercentiles (25th, 50th, and 75th percentiles) for the numerical columns are:")
+print(percentiles)
+print("***********************************************************************************************")
+#Skewness
+skewness_values = numeric_data.skew()
+print("\nSkewness values for the numerical columns are:")
+print(skewness_values)
+print("***********************************************************************************************")
+#Kurtosis
+kurtosis_values = numeric_data.kurtosis()
+print("\nKurtosis values for the numerical columns are:")
+print(kurtosis_values)
+print("***********************************************************************************************")
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+#Country Code
+plt.figure(figsize=(10, 6))
+sns.countplot(data=data, x='Country Code')
+plt.title('Distribution of Country Code')
+plt.xlabel('Country Code')
+plt.ylabel('Count')
+plt.show()
+print("***********************************************************************************************")
+#City
+plt.figure(figsize=(14, 8))
+sns.countplot(data=data, x='City')
+plt.title('Distribution of City')
+plt.xlabel('City')
+plt.ylabel('Count')
+plt.xticks(rotation=45)  # Rotating to x-axis labels for better readability
+plt.show()
+print("***********************************************************************************************")
+#Cuisines
+plt.figure(figsize=(18, 10))
+sns.countplot(data=data, x='Cuisines')
+plt.title('Distribution of Cuisines')
+plt.xlabel('Cuisines')
+plt.ylabel('Count')
+plt.xticks(rotation=90)  # Rotating to x-axis labels for better readability
+plt.show()
+print("***********************************************************************************************")
+# Top cuisines
+top_cuisines = data['Cuisines'].value_counts().head(10)
+print("Top cuisines with the highest number of restaurants are:")
+print(top_cuisines)
+print("***********************************************************************************************")
+# Top cities
+top_cities = data['City'].value_counts().head(10)
+print("\nTop cities with the highest number of restaurants are:")
+print(top_cities)
+print("***********************************************************************************************")
+
+
