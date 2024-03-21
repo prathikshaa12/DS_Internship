@@ -1,0 +1,28 @@
+#Level-2,Task-1
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+# Distribution of restaurants across the different cities
+plt.figure(figsize=(10, 6))
+sns.countplot(data=data, x='City', palette='viridis')
+plt.title('Distribution of Restaurants Across Different Cities')
+plt.xlabel('City')
+plt.ylabel('Number of Restaurants')
+plt.xticks(rotation=45)
+plt.show()
+# Distribution of restaurants across the different countries
+plt.figure(figsize=(10, 6))
+sns.countplot(data=data, x='Country Code', palette='viridis')
+plt.title('Distribution of Restaurants Across Different Countries')
+plt.xlabel('Country Code')
+plt.ylabel('Number of Restaurants')
+plt.xticks(rotation=45)
+plt.show()
+# Correlation between the location and the rating
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=data, x='Latitude', y='Longitude', hue='Aggregate rating', palette='viridis', alpha=0.7)
+plt.title('Correlation between Restaurant Location and Rating')
+plt.xlabel('Latitude')
+plt.ylabel('Longitude')
+plt.legend(title='Rating')
+plt.show()
