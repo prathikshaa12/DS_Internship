@@ -1,0 +1,39 @@
+#Level-1,Task-3
+
+import pandas as pd
+import folium
+data = pd.read_csv(r"E:\intern_datsaet.csv")
+# Creating a map centered around the mean latitude and longitude
+map_restaurants = folium.Map(location=[data['Latitude'].mean(), data['Longitude'].mean()], zoom_start=12)
+# Adding markers for each restaurant
+for index, row in data.iterrows():
+    folium.Marker([row['Latitude'], row['Longitude']], popup=row['Restaurant Name']).add_to(map_restaurants)
+# Display of the map
+map_restaurants
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+# Distribution of restaurants across the different cities
+plt.figure(figsize=(10, 6))
+sns.countplot(data=data, x='City', palette='viridis')
+plt.title('Distribution of Restaurants Across Different Cities')
+plt.xlabel('City')
+plt.ylabel('Number of Restaurants')
+plt.xticks(rotation=45)
+plt.show()
+# Distribution of restaurants across the different countries
+plt.figure(figsize=(10, 6))
+sns.countplot(data=data, x='Country Code', palette='viridis')
+plt.title('Distribution of Restaurants Across Different Countries')
+plt.xlabel('Country Code')
+plt.ylabel('Number of Restaurants')
+plt.xticks(rotation=45)
+plt.show()
+# Correlation between the location and the rating
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=data, x='Latitude', y='Longitude', hue='Aggregate rating', palette='viridis', alpha=0.7)
+plt.title('Correlation between Restaurant Location and Rating')
+plt.xlabel('Latitude')
+plt.ylabel('Longitude')
+plt.legend(title='Rating')
+plt.show()
