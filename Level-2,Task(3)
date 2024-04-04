@@ -1,0 +1,20 @@
+#Level-2,Task-3
+
+import pandas as pd
+from IPython.display import display
+data = pd.read_csv(r"E:\internship_dataset.csv")
+# Calculating the length of the restaurant name and address
+data['Restaurant Name Length'] = data['Restaurant Name'].apply(lambda x: len(str(x)))
+data['Address Length'] = data['Address'].apply(lambda x: len(str(x)))
+# Displaying the updated dataframe with additional features
+display(data.head())
+
+#Level-2,Task-3
+
+import pandas as pd
+data = pd.read_csv(r"E:\internship_dataset.csv")
+#Creating new features "Has Table Booking" and "Has Online Delivery" using binary encoding
+data['Has Table Booking'] = data['Has Table booking'].apply(lambda x: 1 if x == 'Yes' else 0)
+data['Has Online Delivery'] = data['Has Online delivery'].apply(lambda x: 1 if x == 'Yes' else 0)
+# Displaying the updated dataframe
+print(data.head())
