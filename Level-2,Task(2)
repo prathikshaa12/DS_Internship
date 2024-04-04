@@ -1,0 +1,40 @@
+#Level-2,Task-2
+
+import pandas as pd
+import matplotlib.pyplot as plt
+data = pd.read_csv(r"E:\internship_dataset.csv")
+# Defining a mapping for the numeric price ranges to categorical labels
+price_range_mapping = {
+    1: 'Cheap',
+    2: 'Moderate',
+    3: 'Expensive',
+    4: 'Very Expensive'
+}
+# Mapping the numeric price ranges to categorical labels
+data['Price range'] = data['Price range'].map(price_range_mapping)
+# Finding the most common price range
+most_common_price_range = data['Price range'].mode()[0]
+# Printing the most common price range
+print("The most common range of price among all the restaurants is:", most_common_price_range)
+print("****************************************************************************************")
+# Grouping the data by 'Price range' and calculate the mean rating for each group
+mean_rating_by_price_range = data.groupby('Price range')['Aggregate rating'].mean()
+# Identifying the price range with the highest mean rating
+highest_mean_rating_price_range = mean_rating_by_price_range.idxmax()
+# Assigning colors to each price range
+colors = ['lightblue', 'lightgreen', 'orange', 'lightcoral']
+# Plotting the average rating for each price range
+plt.bar(mean_rating_by_price_range.index, mean_rating_by_price_range, color=colors)
+# Highlighting the bar representing the price range with the highest mean rating
+highest_mean_rating_index = mean_rating_by_price_range.index.get_loc(highest_mean_rating_price_range)
+plt.bar(mean_rating_by_price_range.index[highest_mean_rating_index], 
+        mean_rating_by_price_range[highest_mean_rating_price_range], 
+        color='red')
+# Adding title and labels
+plt.title('Average Rating by Price Range')
+plt.xlabel('Price Range')
+plt.ylabel('Average Rating')
+plt.xticks(rotation=45)
+# Showing plot
+plt.tight_layout()
+plt.show()
