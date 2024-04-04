@@ -41,4 +41,99 @@ print("Mean Squared Error-(MSE):", mse)
 print("********************************************************")
 print("R-squared -(R2):", r2)
 
+#Level-3,Task-1
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+data = pd.read_csv(r"E:\internship_dataset.csv")
+# Selecting relevant features and target variable
+features = ['Average Cost for two', 'Has Table booking', 'Has Online delivery']
+target = 'Aggregate rating'
+# Dropping rows with missing values in the selected features and target variable
+data.dropna(subset=features+[target], inplace=True)
+# Splitting the data into features (X) and target variable (y)
+X = data[features]
+y = data[target]
+# Preprocessing: One-hot encode categorical variables
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('onehot', OneHotEncoder(), ['Has Table booking', 'Has Online delivery'])
+    ],
+    remainder='passthrough'
+)
+# Splitting the data into training and testing sets (80% train, 20% test)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Initializing and train Linear Regression model using a pipeline
+linear_reg_model = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('regressor', LinearRegression())
+])
+linear_reg_model.fit(X_train, y_train)
+# Predictions done using Linear Regression
+y_pred_linear = linear_reg_model.predict(X_test)
+
+# Evaluateing Linear Regression model
+mae_linear = mean_absolute_error(y_test, y_pred_linear)
+mse_linear = mean_squared_error(y_test, y_pred_linear)
+r2_linear = r2_score(y_test, y_pred_linear)
+print("******************************************************************************************************")
+print("Linear Regression Metrics:")
+print(f"Mean Absolute Error (MAE): {mae_linear}")
+print(f"Mean Squared Error (MSE): {mse_linear}")
+print(f"R-squared (R2): {r2_linear}")
+print("="*50)
+# Initializing and training Decision Tree model using a pipeline
+decision_tree_model = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('regressor', DecisionTreeRegressor(random_state=42))
+])
+decision_tree_model.fit(X_train, y_train)
+# Predictions using Decision Tree
+y_pred_tree = decision_tree_model.predict(X_test)
+# Evaluating Decision Tree model
+mae_tree = mean_absolute_error(y_test, y_pred_tree)
+mse_tree = mean_squared_error(y_test, y_pred_tree)
+r2_tree = r2_score(y_test, y_pred_tree)
+print("******************************************************************************************************")
+print("Decision Tree Metrics:")
+print(f"Mean Absolute Error (MAE): {mae_tree}")
+print(f"Mean Squared Error (MSE): {mse_tree}")
+print(f"R-squared (R2): {r2_tree}")
+print("="*50)
+# Initializing and training Random Forest model using a pipeline
+random_forest_model = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('regressor', RandomForestRegressor(random_state=42))
+])
+random_forest_model.fit(X_train, y_train)
+# Predictions done using Random Forest
+y_pred_forest = random_forest_model.predict(X_test)
+# Evaluating Random Forest model
+mae_forest = mean_absolute_error(y_test, y_pred_forest)
+mse_forest = mean_squared_error(y_test, y_pred_forest)
+r2_forest = r2_score(y_test, y_pred_forest)
+print("******************************************************************************************************")
+print("Random Forest Metrics:")
+print(f"Mean Absolute Error (MAE): {mae_forest}")
+print(f"Mean Squared Error (MSE): {mse_forest}")
+print(f"R-squared (R2): {r2_forest}")
+print("="*50)
+# Determining the best-performing algorithm
+best_model = min([
+    ('Linear Regression', mae_linear),
+    ('Decision Tree', mae_tree),
+    ('Random Forest', mae_forest)
+], key=lambda x: x[1])
+print("******************************************************************************************************")
+
+print(f"The best-performing algorithm is {best_model[0]} with Mean Absolute Error: {best_model[1]}")
+
+
 
