@@ -1,0 +1,33 @@
+#Level-3,Task-2
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+data=pd.read_csv(r"E:\internship_dataset.csv")
+data.dropna(subset=['Cuisines', 'Aggregate rating', 'Votes'], inplace=True)
+# Convert 'Aggregate rating' to numeric, handling errors as 'coerce' to replace non-numeric values with NaN
+data['Aggregate rating'] = pd.to_numeric(data['Aggregate rating'], errors='coerce')
+# Drop rows with NaN values in 'Aggregate rating' column
+data.dropna(subset=['Aggregate rating'], inplace=True)
+
+# Analyzing Cuisine and Rating Relationship
+# Calculate average rating for each cuisine type
+avg_rating_by_cuisine = data.groupby('Cuisines')['Aggregate rating'].mean().sort_values(ascending=False)
+
+# Visualizing the relationship between cuisine and ratings
+plt.figure(figsize=(12, 6))
+sns.barplot(x=avg_rating_by_cuisine.values[:10], y=avg_rating_by_cuisine.index[:10], hue=avg_rating_by_cuisine.index[:10], legend=False, palette='viridis')
+plt.title('Average Rating by Cuisine (Top 10)')
+plt.xlabel('Average Rating')
+plt.ylabel('Cuisine')
+plt.show()
+
+# Identifying Popular Cuisines
+# Calculate total votes for each cuisine type
+total_votes_by_cuisine = data.groupby('Cuisines')['Votes'].sum().sort_values(ascending=False)
+# Visualizing the popularity of cuisines based on number of votes
+plt.figure(figsize=(12, 6))
+sns.barplot(x=total_votes_by_cuisine.values[:10], y=total_votes_by_cuisine.index[:10], hue=total_votes_by_cuisine.index[:10], legend=False, palette='magma')
+plt.title('Popular Cuisines by Total Votes (Top 10)')
+plt.xlabel('Total Votes')
+plt.ylabel('Cuisine')
+plt.show()
